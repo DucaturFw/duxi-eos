@@ -2,18 +2,30 @@ import r from 'rethinkdb';
 import { IContext } from '../context';
 import { important } from '../utils';
 
-export const getConnection = (ctx: Partial<IContext>) => (): Promise<
-  r.Connection
-> => {
-  return r.connect({
-    host: important(ctx.options).rethinkHost,
-    port: important(ctx.options).rethinkPort
-  });
+export const getConnection = (ctx: {
+  options?: {
+    rethinkHost?: string;
+    rethinkPort?: number;
+  };
+  conn?: r.Connection;
+}) => async (): Promise<r.Connection> => {
+  if (ctx.conn && ctx.conn.open) {
+    return ctx.conn;
+  } else {
+    const options = important(ctx.options);
+    const host = important(options.rethinkHost);
+    const port = important(options.rethinkPort);
+    return r.connect({ host, port });
+  }
 };
 
-export const getOrCreateDatabase = (ctx: Partial<IContext>) => async (
-  database: string
-): Promise<r.Db> => {
+export const getOrCreateDatabase = (ctx: {
+  conn?: r.Connection;
+  db?: r.Db;
+}) => async (database: string): Promise<r.Db> => {
+  if (ctx.db) {
+    return ctx.db;
+  }
   const connection = important(ctx.conn);
   const databases = await r.dbList().run(connection);
   if (databases.indexOf(database) === -1) {
@@ -23,10 +35,13 @@ export const getOrCreateDatabase = (ctx: Partial<IContext>) => async (
   return r.db(database);
 };
 
-export const checkOrCreateTable = (ctx: Partial<IContext>) => async (
+export const getOrCreateTable = (ctx: Partial<IContext>) => async (
   table: string,
   opts?: r.TableOptions
-): Promise<void> => {
+): Promise<r.Table> => {
+  if (ctx.tables && ctx.tables[table]) {
+    return ctx.tables[table];
+  }
   const database = important(ctx.db);
   const connection = important(ctx.conn);
 
@@ -34,4 +49,6 @@ export const checkOrCreateTable = (ctx: Partial<IContext>) => async (
   if (tables.indexOf(table) === -1) {
     await database.tableCreate(table, opts).run(connection);
   }
+
+  return database.table(table);
 };
