@@ -1,79 +1,19 @@
-import {
-  getConnection,
-  getOrCreateDatabase,
-  checkOrCreateTable,
-  checkOrCreateIndex
-} from '../database/utils';
-import { IContext, IOptions } from '../context';
-import { inside, replace, important } from '../utils';
+import { IContext } from '../context';
 import { getLastSyncedBlock } from '../database';
 import { BlockModel } from '../models/block';
 
 import mongoose from 'mongoose';
-
-function getOptions() {
-  return async (): Promise<IOptions> => ({
-    app: 'blocks',
-    delay: 500,
-    rethinkHost: process.env.RETHINK_HOST,
-    rethinkPort: parseInt(process.env.RETHINK_PORT, 10),
-    rethinkDatabase: process.env.RETHINK_DB
-  });
-}
+import { initialize } from './initiate-app';
 
 export async function run(ctx: Partial<IContext>) {
   let context = { ...ctx } as IContext;
   try {
     context.logger.verbose('run blocks');
-    important(process.env.RETHINK_HOST);
-    important(process.env.RETHINK_PORT);
-    important(process.env.RETHINK_DB);
-    important(process.env.MONGODB_HOST);
-    important(process.env.MONGODB_PORT);
-    important(process.env.MONGODB_DB);
-    await mongoose.connect(
-      [
-        'mongodb://',
-        process.env.MONGODB_HOST,
-        ':',
-        process.env.MONGODB_PORT,
-        '/',
-        process.env.MONGODB_DB
-      ].join('')
-    );
-
     context.tables = {};
     context.indexes = {};
-
-    context = (await Promise.resolve<Partial<IContext>>(context)
-      .then(inside(getOptions(), replace('options')))
-      .then(inside(getConnection(), replace('conn')))
-      .then(
-        inside(
-          ctx => getOrCreateDatabase(ctx.options.rethinkDatabase)(ctx),
-          replace('db')
-        )
-      )
-      .then(
-        inside(
-          checkOrCreateTable('blocks', {
-            primary_key: '_id'
-          }),
-          (ctx, table) => ((ctx.tables['blocks'] = table), ctx)
-        )
-      )
-      .then(
-        inside(
-          checkOrCreateIndex('blocks', 'block_id'),
-          (ctx, key) => ((ctx.indexes[key] = true), ctx)
-        )
-      )
-      .then(
-        inside(
-          checkOrCreateIndex('blocks', 'block_num'),
-          (ctx, key) => ((ctx.indexes[key] = true), ctx)
-        )
-      )) as IContext;
+    context = await Promise.resolve<Partial<IContext>>(context).then(
+      initialize('blocks')
+    );
 
     const last = await getLastSyncedBlock(context);
     const unsyncedBlocks = (await BlockModel.find({

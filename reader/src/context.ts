@@ -2,10 +2,12 @@ import r from 'rethinkdb';
 
 export interface IOptions {
   app: string;
-  delay: number;
   rethinkHost: string;
   rethinkPort: number;
   rethinkDatabase: string;
+  mongodbHost: string;
+  mongodbPort: number;
+  mongodbDatabase: string;
 }
 
 export interface IEosOptions {}
