@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/DucaturFw/duxi-eos/compare/v1.0.0...v2.0.0) (2018-09-11)
+
+
+### Bug Fixes
+
+* **eos:** Fix error in shell script which prevent mocking ([5294d0f](https://github.com/DucaturFw/duxi-eos/commit/5294d0f))
+* **reader:** mutate ctx to halt connection ([5302f02](https://github.com/DucaturFw/duxi-eos/commit/5302f02))
+
+
+### Code Refactoring
+
+* **reader:** Inject default context from entrypoint ([76df3f7](https://github.com/DucaturFw/duxi-eos/commit/76df3f7))
+
+
+### Features
+
+* **reader:** logger modules in context ([63711dc](https://github.com/DucaturFw/duxi-eos/commit/63711dc))
+* **root:** add example backend and frontend ([fb4fc01](https://github.com/DucaturFw/duxi-eos/commit/fb4fc01))
+* **root:** docker-compose services to run examples ([5424a27](https://github.com/DucaturFw/duxi-eos/commit/5424a27))
+
+
+### BREAKING CHANGES
+
+* **reader:** Each app `run` function should receive `Partial<IContext>` argument
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/DucaturFw/duxi-eos/compare/v0.3.0-0...v1.0.0) (2018-09-11)
 
