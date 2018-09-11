@@ -1,14 +1,5 @@
 import { prop, Typegoose } from 'typegoose';
-import {
-  Hash,
-  Name,
-  AccountName,
-  DateString,
-  Signature,
-  HexData,
-  Address,
-  TransactionState
-} from './scalars';
+import { Hash, AccountName, DateString, Signature } from './scalars';
 
 export class Block extends Typegoose {
   @prop({ required: true })
@@ -42,3 +33,9 @@ export class Block extends Typegoose {
   @prop({ required: true })
   validated: boolean;
 }
+
+export const BlockModel = new Block().setModelForClass(Block, {
+  schemaOptions: {
+    collection: 'blocks'
+  }
+});
