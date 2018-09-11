@@ -11,6 +11,11 @@ export interface IOptions {
 export interface IEosOptions {}
 
 export interface IContext {
+  logger: {
+    log(message?: any, ...optionalParams: any[]): void;
+    verbose(message?: any, ...optionalParams: any[]): void;
+    error(message?: any, ...optionalParams: any[]): void;
+  };
   options: IOptions;
   db: r.Db;
   conn: r.Connection;
