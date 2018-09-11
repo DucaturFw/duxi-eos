@@ -1,3 +1,4 @@
+import { Table } from 'rethinkdb';
 import mongoose from 'mongoose';
 import { IContext, IOptions } from '../context';
 import { inside, replace, important } from '../utils';
@@ -32,33 +33,34 @@ function initiazeDatabase() {
   return ctx => getOrCreateDatabase(ctx.options.rethinkDatabase)(ctx);
 }
 
-const tables = {
-  blocks(ctx: Partial<IContext>) {
-    return Promise.resolve(ctx)
-      .then(
-        inside(
-          checkOrCreateTable('blocks', {
-            primary_key: '_id'
-          }),
-          (ctx, table) => ((ctx.tables['blocks'] = table), ctx)
-        )
-      )
-      .then(
-        inside(
-          checkOrCreateIndex('blocks', 'block_id'),
-          (ctx, key) => ((ctx.indexes[key] = true), ctx)
-        )
-      )
-      .then(
-        inside(
-          checkOrCreateIndex('blocks', 'block_num'),
-          (ctx, key) => ((ctx.indexes[key] = true), ctx)
-        )
-      );
-  }
+const pushTable = (tableName: string) => (
+  ctx: Partial<IContext>,
+  table: Table
+) => ((ctx.tables[tableName] = table), ctx);
+
+const pushIndex = (ctx: Partial<IContext>, key: string) => (
+  (ctx.indexes[key] = true), ctx
+);
+
+const DEFAULT_TABLE = {
+  primary_key: '_id'
 };
 
-export const initialize = (app: string) => (
+function makeTable(table: string, indexes: string[]) {
+  return async (ctx: Partial<IContext>) => {
+    ctx = await inside(
+      checkOrCreateTable(table, DEFAULT_TABLE),
+      pushTable(table)
+    )(ctx);
+    for (let index of indexes) {
+      ctx = await inside(checkOrCreateIndex(table, index), pushIndex)(ctx);
+    }
+
+    return ctx;
+  };
+}
+
+export const initialize = (app: string, table: string, indexes: string[]) => (
   ctx: Partial<IContext>
 ): Promise<IContext> => {
   return Promise.resolve(ctx)
@@ -74,6 +76,6 @@ export const initialize = (app: string) => (
     })
     .then(inside(getConnection(), replace('conn')))
     .then(inside(initiazeDatabase(), replace('db')))
-    .then(tables[app])
+    .then(makeTable(table, indexes))
     .then(ctx => ctx as IContext);
 };
