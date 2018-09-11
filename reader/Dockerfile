@@ -10,4 +10,5 @@ RUN apk add --no-cache --update \
 WORKDIR /usr/src/app
 COPY . .
 RUN yarn
+RUN yarn build
 RUN npm i -g npm-run-all
