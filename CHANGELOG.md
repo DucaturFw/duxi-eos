@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/DucaturFw/duxi-eos/compare/v0.1.0...v0.2.0) (2018-09-11)
+
+
+### Features
+
+* **eos:** blog contracts with simple logic ([5e5e68d](https://github.com/DucaturFw/duxi-eos/commit/5e5e68d))
+* **eos:** quick start EOS node scripts ([57cb417](https://github.com/DucaturFw/duxi-eos/commit/57cb417))
+* **root:** Auto changelog generation based on [standard-version](/conventional-changelog/standard-v ([b877522](https://github.com/DucaturFw/duxi-eos/commit/b877522))
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2018-09-11)
 

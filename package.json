@@ -1,6 +1,6 @@
 {
   "name": "duxi-eos",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "EOS Module for Ducatur Exchange Infrastructure",
   "repository": "https://github.com/DucaturFw/duxi-eos",
   "author": "Aler Denisov <aler.zampillo@gmail.com>",
