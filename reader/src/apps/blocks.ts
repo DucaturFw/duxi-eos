@@ -21,7 +21,8 @@ function getOptions() {
   });
 }
 
-export async function run() {
+export async function run(ctx: Partial<IContext>) {
+  ctx.logger.verbose('run blocks');
   important(process.env.RETHINK_HOST);
   important(process.env.RETHINK_PORT);
   important(process.env.RETHINK_DB);
@@ -40,6 +41,7 @@ export async function run() {
   );
 
   const context = (await Promise.resolve<Partial<IContext>>({
+    ...ctx,
     tables: {},
     indexes: {}
   })
