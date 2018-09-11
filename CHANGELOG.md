@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0-0"></a>
+# [0.3.0-0](https://github.com/DucaturFw/duxi-eos/compare/v0.2.0...v0.3.0-0) (2018-09-11)
+
+
+### Features
+
+* **reader:** Add typegoose model of Account record ([8695e62](https://github.com/DucaturFw/duxi-eos/commit/8695e62))
+* **reader:** Add typegoose model of ActionTrace record ([4043814](https://github.com/DucaturFw/duxi-eos/commit/4043814))
+* **reader:** Add typegoose model of BlockState record ([d2f537d](https://github.com/DucaturFw/duxi-eos/commit/d2f537d))
+* **reader:** command args miniservice starter ([4674e26](https://github.com/DucaturFw/duxi-eos/commit/4674e26))
+* **reader:** Reexport all models from `./models` ([6b411f9](https://github.com/DucaturFw/duxi-eos/commit/6b411f9))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/DucaturFw/duxi-eos/compare/v0.1.0...v0.2.0) (2018-09-11)
 
