@@ -42,6 +42,6 @@ export function replace(field: ContextFields) {
   });
 }
 
-export function nothing(ctx: Partial<IContext>, value: any) {
+export function nothing(ctx: Partial<IContext>) {
   return ctx;
 }
