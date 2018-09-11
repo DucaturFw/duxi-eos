@@ -41,6 +41,57 @@ services:
     volumes:
       - "./mnt/${EOS_NETWORK}/mongo:/data/db"
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: duxi/backend:1
+    expose:
+      - 8000
+    ports:
+      - "4000:8000"
+    depends_on:
+      - eos
+      - mongodb
+      - rethinkdb
+    environment:
+      PORT: 8000
+      DELAY: 10s
+      EOSIO_CONTRACT_ACCOUNT: blogaccount
+      EOSIO_STARTING_BLOCK: 1
+      EOSIO_HTTP_URL: http://eos:8888
+      MONGODB_URL: mongodb://mongodb/blog_platform
+    volumes:
+      - "./wait.sh:/wait.sh"
+    command: ["/wait.sh", "npm", "run", "start"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: duxi/frontend:1
+    expose:
+      - 8000
+    ports:
+      - "5000:8000"
+    depends_on:
+      - eos
+      - mongodb
+      - rethinkdb
+    environment:
+      PORT: 8000
+      DELAY: 10s
+      REACT_APP_EOSIO_CONTRACT_ACCOUNT: blogaccount
+      REACT_APP_EOSIO_ACCOUNT: bobross
+      REACT_APP_EOSIO_PRIVATE_KEY: 5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5
+      REACT_APP_EOSIO_CHAIN_ID: cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f
+      REACT_APP_EOSIO_HTTP_URL: http://localhost:8888
+      REACT_APP_API_URL: http://localhost:4000
+      REACT_APP_WS_URL: localhost:4000
+    volumes:
+      - "./wait.sh:/wait.sh"
+    command: ["/wait.sh", "npm", "run", "start"]
+
   setup-reader:
     build:
       context: ./reader
