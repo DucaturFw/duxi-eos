@@ -1,14 +1,5 @@
 import { prop, Typegoose } from 'typegoose';
-import {
-  Hash,
-  Name,
-  AccountName,
-  DateString,
-  Signature,
-  HexData,
-  Address,
-  TransactionState
-} from './scalars';
+import { Hash, Name, AccountName, DateString, HexData } from './scalars';
 
 export class Transaction extends Typegoose {
   @prop({ required: true })
@@ -49,3 +40,12 @@ export class Transaction extends Typegoose {
   @prop({ required: true })
   transaction_extensions: any[];
 }
+
+export const TransactionModel = new Transaction().setModelForClass(
+  Transaction,
+  {
+    schemaOptions: {
+      collection: 'transactions'
+    }
+  }
+);
