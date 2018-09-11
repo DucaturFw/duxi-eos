@@ -34,7 +34,7 @@ export function makeReader<T extends Document>(config: {
         })
         .run(context.conn);
 
-      console.log(result);
+      context.logger.verbose(result);
     } catch (e) {
       context.logger.error(e);
     }
