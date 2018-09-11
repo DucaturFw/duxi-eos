@@ -1,18 +1,17 @@
 import r from 'rethinkdb';
 
-export interface IEosWatchOptions {
+export interface IOptions {
   app: string;
   delay: number;
   rethinkHost: string;
   rethinkPort: number;
   rethinkDatabase: string;
-  rethinkTable: string;
 }
 
 export interface IEosOptions {}
 
 export interface IContext {
-  options: IEosWatchOptions;
+  options: IOptions;
   db: r.Db;
   conn: r.Connection;
   tables: { [key: string]: r.Table };
