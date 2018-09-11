@@ -1,14 +1,5 @@
 import { prop, Typegoose } from 'typegoose';
-import {
-  Hash,
-  Name,
-  AccountName,
-  DateString,
-  Signature,
-  HexData,
-  Address,
-  TransactionState
-} from './scalars';
+import { AccountName, DateString } from './scalars';
 
 export class Account extends Typegoose {
   @prop({ required: true })
@@ -16,3 +7,9 @@ export class Account extends Typegoose {
   @prop({ required: true })
   createdAt: DateString;
 }
+
+export const AccountModel = new Account().setModelForClass(Account, {
+  schemaOptions: {
+    collection: 'account'
+  }
+});
