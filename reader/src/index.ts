@@ -7,7 +7,14 @@ async function run() {
     app?: string;
   }>(process.argv.slice(2));
 
-  let apps: string[] = ['blocks'];
+  let apps: string[] = [
+    'blocks',
+    'transactions',
+    'transaction-traces',
+    'pub-keys',
+    'block-states',
+    'action-traces'
+  ];
   const logger = {
     verbose: console.log,
     log: console.log,
@@ -18,14 +25,13 @@ async function run() {
     apps = [app];
   }
 
-  await Promise.all(
-    apps.map(name =>
-      require(`./apps/${name}`).run({
-        app: name,
-        logger
-      })
-    )
-  );
+  for (let name of apps) {
+    logger.verbose('run ' + name);
+    await require(`./apps/${name}`).run({
+      app: name,
+      logger
+    });
+  }
 }
 
 run();
