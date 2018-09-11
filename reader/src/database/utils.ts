@@ -1,6 +1,6 @@
-import r, { table } from 'rethinkdb';
+import r from 'rethinkdb';
 import { IContext } from '../context';
-import { important, DeepPartial } from '../utils';
+import { important } from '../utils';
 
 export const getConnection = () => async (
   ctx: Partial<IContext>
