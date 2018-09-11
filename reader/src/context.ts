@@ -16,4 +16,7 @@ export interface IContext {
   db: r.Db;
   conn: r.Connection;
   tables: { [key: string]: r.Table };
+  indexes: {
+    [key: string]: true;
+  };
 }
