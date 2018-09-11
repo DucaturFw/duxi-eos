@@ -53,11 +53,14 @@
   "dependencies": {
     "@types/mongodb": "^3.1.4",
     "@types/mongoose": "^5.2.11",
+    "@types/rethinkdb": "^2.3.13",
     "demux": "^2.0.0",
     "demux-eos": "^1.1.0",
+    "dotenv": "^6.0.0",
     "minimist": "^1.2.0",
     "mongoose": "^5.2.14",
     "reflect-metadata": "^0.1.12",
+    "rethinkdb": "^2.3.3",
     "typegoose": "^5.2.1"
   },
   "devDependencies": {
