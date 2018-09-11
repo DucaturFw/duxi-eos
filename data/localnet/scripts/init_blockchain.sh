@@ -27,7 +27,7 @@ nodeos -e -p eosio -d /mnt/dev/data \
   --access-control-allow-origin=* \
   --mongodb-uri=mongodb://mongodb \
   --contracts-console \
-  --verbose-http-errors
+  --verbose-http-errors &
 sleep 1s
   until curl localhost:8888/v1/chain/get_info
 do
