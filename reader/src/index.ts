@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import minimist from 'minimist';
 
 const apps = ['blocks'];
@@ -7,11 +9,16 @@ async function run() {
     app?: string;
   }>(process.argv.slice(2));
 
-  if (app) {
-    const { run } = require(`./apps/${app}`);
-    await run();
-  } else {
-    await Promise.all(apps.map(name => require(`./apps/${name}`).run));
+  try {
+    if (app) {
+      const { run } = require(`./apps/${app}`);
+      await run();
+    } else {
+      await Promise.all(apps.map(name => require(`./apps/${name}`).run));
+    }
+  } catch (e) {
+    console.error('ERROR:', e);
+    process.exit(-1);
   }
 }
 
