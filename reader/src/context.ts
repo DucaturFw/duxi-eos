@@ -15,4 +15,5 @@ export interface IContext {
   options: IEosWatchOptions;
   db: r.Db;
   conn: r.Connection;
+  tables: { [key: string]: r.Table };
 }
