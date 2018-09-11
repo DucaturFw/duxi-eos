@@ -27,6 +27,7 @@ nodeos -e -p eosio -d /mnt/dev/data \
   --access-control-allow-origin=* \
   --mongodb-uri=mongodb://mongodb \
   --contracts-console \
+  --max-transaction-time=1000 \
   --verbose-http-errors &
 sleep 1s
   until curl localhost:8888/v1/chain/get_info
@@ -77,5 +78,6 @@ echo "=== end of setup blockchain accounts and smart contract ==="
 # create a file to indicate the blockchain has been initialized
 touch "/mnt/dev/data/initialized"
 
+jobs
 # put the background nodeos job to foreground for docker run
 fg %1

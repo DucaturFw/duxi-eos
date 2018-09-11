@@ -22,9 +22,12 @@ nodeos -e -p eosio -d /mnt/dev/data \
   --plugin eosio::chain_api_plugin \
   --plugin eosio::history_api_plugin \
   --plugin eosio::http_plugin \
+  --plugin eosio::mongo_db_plugin \
+  --mongodb-uri=mongodb://mongodb \
   --http-server-address=0.0.0.0:8888 \
   --access-control-allow-origin=* \
   --contracts-console \
+  --max-transaction-time=1000 \
   --verbose-http-errors
 
 # `--hard-replay` option is needed
