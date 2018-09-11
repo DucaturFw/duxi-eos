@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/DucaturFw/duxi-eos/compare/v2.0.0...v2.1.0) (2018-09-11)
+
+
+### Bug Fixes
+
+* **reader:** Now, `DateString` is alias to `Date` ([879c21b](https://github.com/DucaturFw/duxi-eos/commit/879c21b))
+
+
+### Features
+
+* **reader:** `makeReader` method to create reader from config ([f1d97dd](https://github.com/DucaturFw/duxi-eos/commit/f1d97dd))
+* **reader:** `PubKey` schema and `PubKeyModel` ([7b6b450](https://github.com/DucaturFw/duxi-eos/commit/7b6b450))
+* **reader:** Add new `action-traces` reader app ([37fdb3c](https://github.com/DucaturFw/duxi-eos/commit/37fdb3c))
+* **reader:** Add new `block-states` reader app ([d8001ec](https://github.com/DucaturFw/duxi-eos/commit/d8001ec))
+* **reader:** Add new `transaction-traces` reader app ([1821694](https://github.com/DucaturFw/duxi-eos/commit/1821694))
+* **reader:** Add new `transaction` reader app ([9ab9da6](https://github.com/DucaturFw/duxi-eos/commit/9ab9da6))
+* **reader:** Use all readers by default ([257e03f](https://github.com/DucaturFw/duxi-eos/commit/257e03f))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/DucaturFw/duxi-eos/compare/v1.0.0...v2.0.0) (2018-09-11)
 
