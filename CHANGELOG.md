@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/DucaturFw/duxi-eos/compare/v2.1.0...v2.2.0) (2018-09-11)
+
+
+### Bug Fixes
+
+* **eos:** Add `--max-transaction-time=1000` ([d195f4e](https://github.com/DucaturFw/duxi-eos/commit/d195f4e))
+* **reader:** Remove `console.log` from `base-app` ([512ca37](https://github.com/DucaturFw/duxi-eos/commit/512ca37))
+* **reader:** Strong typed applications in entrypoint ([3f1350b](https://github.com/DucaturFw/duxi-eos/commit/3f1350b))
+
+
+### Features
+
+* **root:** Docker-compose runs all reader ([e7c4734](https://github.com/DucaturFw/duxi-eos/commit/e7c4734))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/DucaturFw/duxi-eos/compare/v2.0.0...v2.1.0) (2018-09-11)
 
