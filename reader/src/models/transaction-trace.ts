@@ -4,9 +4,7 @@ import {
   Name,
   AccountName,
   DateString,
-  Signature,
   HexData,
-  Address,
   TransactionState
 } from './scalars';
 
@@ -54,3 +52,12 @@ export class TransactionTrace extends Typegoose {
   @prop({ required: true })
   createdAt: DateString;
 }
+
+export const TransactionTraceModel = new TransactionTrace().setModelForClass(
+  TransactionTrace,
+  {
+    schemaOptions: {
+      collection: 'transaction_traces'
+    }
+  }
+);
