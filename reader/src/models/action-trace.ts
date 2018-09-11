@@ -1,14 +1,5 @@
 import { prop, Typegoose } from 'typegoose';
-import {
-  Hash,
-  Name,
-  AccountName,
-  DateString,
-  Signature,
-  HexData,
-  Address,
-  TransactionState
-} from './scalars';
+import { Hash, Name, AccountName, DateString, HexData } from './scalars';
 
 export class ActionTrace extends Typegoose {
   @prop({ required: true })
@@ -41,3 +32,12 @@ export class ActionTrace extends Typegoose {
   @prop({ required: true })
   createdAt: DateString;
 }
+
+export const ActionTraceModel = new ActionTrace().setModelForClass(
+  ActionTrace,
+  {
+    schemaOptions: {
+      collection: 'action_traces'
+    }
+  }
+);
