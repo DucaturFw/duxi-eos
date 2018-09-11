@@ -118,3 +118,103 @@ services:
     volumes:
       - "./loop.sh:/loop.sh"
     command: ["/loop.sh", "node", ".", "--app", "blocks"]
+
+  transactions-reader:
+    restart: always
+    image: duxi/eos-reader:1
+    depends_on:
+      - setup-reader
+      - mongodb
+      - rethinkdb
+    environment:
+      RETHINK_HOST: rethinkdb
+      RETHINK_PORT: 28015
+      RETHINK_DB: eos
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_DB: EOS
+      DELAY: 0.25s
+      APP: transactions
+    volumes:
+      - "./loop.sh:/loop.sh"
+    command: ["/loop.sh", "node", ".", "--app", "transactions"]
+
+  action-traces-reader:
+    restart: always
+    image: duxi/eos-reader:1
+    depends_on:
+      - setup-reader
+      - mongodb
+      - rethinkdb
+    environment:
+      RETHINK_HOST: rethinkdb
+      RETHINK_PORT: 28015
+      RETHINK_DB: eos
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_DB: EOS
+      DELAY: 0.25s
+      APP: action-traces
+    volumes:
+      - "./loop.sh:/loop.sh"
+    command: ["/loop.sh", "node", ".", "--app", "action-traces"]
+
+  block-states-reader:
+    restart: always
+    image: duxi/eos-reader:1
+    depends_on:
+      - setup-reader
+      - mongodb
+      - rethinkdb
+    environment:
+      RETHINK_HOST: rethinkdb
+      RETHINK_PORT: 28015
+      RETHINK_DB: eos
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_DB: EOS
+      DELAY: 0.25s
+      APP: block-states
+    volumes:
+      - "./loop.sh:/loop.sh"
+    command: ["/loop.sh", "node", ".", "--app", "block-states"]
+
+  pub-keys-reader:
+    restart: always
+    image: duxi/eos-reader:1
+    depends_on:
+      - setup-reader
+      - mongodb
+      - rethinkdb
+    environment:
+      RETHINK_HOST: rethinkdb
+      RETHINK_PORT: 28015
+      RETHINK_DB: eos
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_DB: EOS
+      DELAY: 0.25s
+      APP: pub-keys
+    volumes:
+      - "./loop.sh:/loop.sh"
+    command: ["/loop.sh", "node", ".", "--app", "pub-keys"]
+
+  transaction-traces-reader:
+    restart: always
+    image: duxi/eos-reader:1
+    depends_on:
+      - setup-reader
+      - mongodb
+      - rethinkdb
+    environment:
+      RETHINK_HOST: rethinkdb
+      RETHINK_PORT: 28015
+      RETHINK_DB: eos
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_DB: EOS
+      DELAY: 0.25s
+      APP: transaction-traces
+    volumes:
+      - "./loop.sh:/loop.sh"
+    command: ["/loop.sh", "node", ".", "--app", "transaction-traces"]
