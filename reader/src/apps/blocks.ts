@@ -22,76 +22,85 @@ function getOptions() {
 }
 
 export async function run(ctx: Partial<IContext>) {
-  ctx.logger.verbose('run blocks');
-  important(process.env.RETHINK_HOST);
-  important(process.env.RETHINK_PORT);
-  important(process.env.RETHINK_DB);
-  important(process.env.MONGODB_HOST);
-  important(process.env.MONGODB_PORT);
-  important(process.env.MONGODB_DB);
-  await mongoose.connect(
-    [
-      'mongodb://',
-      process.env.MONGODB_HOST,
-      ':',
-      process.env.MONGODB_PORT,
-      '/',
-      process.env.MONGODB_DB
-    ].join('')
-  );
+  let context = { ...ctx } as IContext;
+  try {
+    context.logger.verbose('run blocks');
+    important(process.env.RETHINK_HOST);
+    important(process.env.RETHINK_PORT);
+    important(process.env.RETHINK_DB);
+    important(process.env.MONGODB_HOST);
+    important(process.env.MONGODB_PORT);
+    important(process.env.MONGODB_DB);
+    await mongoose.connect(
+      [
+        'mongodb://',
+        process.env.MONGODB_HOST,
+        ':',
+        process.env.MONGODB_PORT,
+        '/',
+        process.env.MONGODB_DB
+      ].join('')
+    );
 
-  const context = (await Promise.resolve<Partial<IContext>>({
-    ...ctx,
-    tables: {},
-    indexes: {}
-  })
-    .then(inside(getOptions(), replace('options')))
-    .then(inside(getConnection(), replace('conn')))
-    .then(
-      inside(
-        ctx => getOrCreateDatabase(ctx.options.rethinkDatabase)(ctx),
-        replace('db')
+    context.tables = {};
+    context.indexes = {};
+
+    context = (await Promise.resolve<Partial<IContext>>(context)
+      .then(inside(getOptions(), replace('options')))
+      .then(inside(getConnection(), replace('conn')))
+      .then(
+        inside(
+          ctx => getOrCreateDatabase(ctx.options.rethinkDatabase)(ctx),
+          replace('db')
+        )
       )
-    )
-    .then(
-      inside(
-        checkOrCreateTable('blocks', {
-          primary_key: '_id'
-        }),
-        (ctx, table) => ((ctx.tables['blocks'] = table), ctx)
+      .then(
+        inside(
+          checkOrCreateTable('blocks', {
+            primary_key: '_id'
+          }),
+          (ctx, table) => ((ctx.tables['blocks'] = table), ctx)
+        )
       )
-    )
-    .then(
-      inside(
-        checkOrCreateIndex('blocks', 'block_id'),
-        (ctx, key) => ((ctx.indexes[key] = true), ctx)
+      .then(
+        inside(
+          checkOrCreateIndex('blocks', 'block_id'),
+          (ctx, key) => ((ctx.indexes[key] = true), ctx)
+        )
       )
-    )
-    .then(
-      inside(
-        checkOrCreateIndex('blocks', 'block_num'),
-        (ctx, key) => ((ctx.indexes[key] = true), ctx)
-      )
-    )) as IContext;
+      .then(
+        inside(
+          checkOrCreateIndex('blocks', 'block_num'),
+          (ctx, key) => ((ctx.indexes[key] = true), ctx)
+        )
+      )) as IContext;
 
-  const last = await getLastSyncedBlock(context);
-  const unsyncedBlocks = (await BlockModel.find({
-    block_num: { $gt: last }
-  }).exec())
-    .map(t => t.toObject())
-    .map(t => ((t._id = t._id.toString()), t));
+    const last = await getLastSyncedBlock(context);
+    const unsyncedBlocks = (await BlockModel.find({
+      block_num: { $gt: last }
+    }).exec())
+      .map(t => t.toObject())
+      .map(t => ((t._id = t._id.toString()), t));
 
-  console.log(`Sync ${unsyncedBlocks.length} blocks`);
+    console.log(`Sync ${unsyncedBlocks.length} blocks`);
 
-  const result = await context.db
-    .table('blocks')
-    .insert(unsyncedBlocks, {
-      conflict: 'error'
-    })
-    .run(context.conn);
+    const result = await context.db
+      .table('blocks')
+      .insert(unsyncedBlocks, {
+        conflict: 'error'
+      })
+      .run(context.conn);
 
-  console.log(result);
+    console.log(result);
+  } catch (e) {
+    context.logger.error(e);
+  }
 
-  context.conn.close();
-  mongoose.disconnect();
+  if (context.conn && context.conn.open) {
+    context.conn.close();
+  }
+
+  if (mongoose.connection && mongoose.connection.readyState != 0) {
+    mongoose.disconnect();
+  }
 }

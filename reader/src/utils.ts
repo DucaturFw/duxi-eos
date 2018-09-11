@@ -36,10 +36,7 @@ export function sequence(
 }
 
 export function replace(field: ContextFields) {
-  return (ctx: Partial<IContext>, value: any) => ({
-    ...ctx,
-    [field]: value
-  });
+  return (ctx: Partial<IContext>, value: any) => ((ctx[field] = value), ctx);
 }
 
 export function nothing(ctx: Partial<IContext>) {

@@ -24,6 +24,7 @@ export const getOrCreateDatabase = (database: string) => async (
   const connection = important(ctx.conn);
   const databases = await r.dbList().run(connection);
   if (databases.indexOf(database) === -1) {
+    ctx.logger.verbose(`Create database ${database}`);
     await r.dbCreate(database).run(connection);
   }
 
@@ -42,6 +43,7 @@ export const checkOrCreateTable = (
 
   const tables = await database.tableList().run(connection);
   if (tables.indexOf(table) === -1) {
+    ctx.logger.verbose(`Create table ${table}`);
     await database.tableCreate(table, opts).run(connection);
   }
 
@@ -63,7 +65,9 @@ export const checkOrCreateIndex = <U>(
 
   let indexes = await table.indexList().run(connection);
   if (indexes.indexOf(indexName) == -1) {
+    ctx.logger.verbose(`Create index ${tableName}:${indexName}`);
     await table.indexCreate(indexName, indexFunc).run(connection);
+    ctx.logger.verbose(`Wait index ${tableName}:${indexName}`);
     await table.indexWait(indexName).run(connection);
   }
 
